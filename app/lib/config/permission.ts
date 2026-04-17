@@ -13,7 +13,8 @@ export const ROUTES_ACCESS: Route[] = [
   { path: '/dashboard/user', allowedRoles: ['admin'] },
   { path: '/dashboard/staff', allowedRoles: ['admin'] },
   { path: '/dashboard/transaction', allowedRoles: ['admin'] },
-  { path: '/dashboard/attendance', allowedRoles: ['admin'] }
+  { path: '/dashboard/attendance', allowedRoles: ['admin'] },
+  { path: '/dashboard/inventory-report', allowedRoles: ['admin', 'manager', 'inventory'] }
 ];
 
 export function hasAccess(userRole: string, path: string): boolean {

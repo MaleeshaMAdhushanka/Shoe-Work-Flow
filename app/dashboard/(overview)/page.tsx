@@ -5,7 +5,9 @@ import RevenueChart from "@/app/ui/dashboard/revenue-chart";
 import BestSellers from "@/app/ui/dashboard/best-sellers";
 import { auth } from "@/auth";
 import { fetchAllInventoryItems, fetchInventoryStats } from "@/app/lib/item/inventory-report-data";
+import { fetchActiveOrders, fetchCustomerOrderStats, fetchSalesStats, fetchTopCustomersByOrders } from "@/app/lib/order/sales-report-data";
 import { PDFDownloadButton } from "@/app/ui/inventory/pdf-download";
+import { SalesPDFDownloadButton } from "@/app/ui/sales/pdf-download";
 import { hasAccess } from "@/app/lib/config/permission";
 
 export default async function Page() {
@@ -13,9 +15,12 @@ export default async function Page() {
   const userRole = session?.user?.role || "";
   // Show inventory report for inventory managers and admins
   const canViewInventoryReport = userRole.toLowerCase() === "inventory" || userRole.toLowerCase() === "admin" || userRole.toLowerCase() === "manager";
+  // Show sales report for sales managers and admins
+  const canViewSalesReport = userRole.toLowerCase() === "sales" || userRole.toLowerCase() === "admin" || userRole.toLowerCase() === "manager";
 
   let inventoryItems: any[] = [];
   let inventoryStats: any = null;
+  let salesData: any = null;
 
   if (canViewInventoryReport) {
     try {
@@ -34,6 +39,30 @@ export default async function Page() {
     }
   }
 
+  if (canViewSalesReport) {
+    try {
+      const [orders, customers, stats, topCustomers] = await Promise.all([
+        fetchActiveOrders(),
+        fetchCustomerOrderStats(),
+        fetchSalesStats(),
+        fetchTopCustomersByOrders(10),
+      ]);
+      salesData = {
+        orders,
+        customers,
+        stats: {
+          total_orders: stats.total_orders,
+          total_revenue: stats.total_revenue,
+          avg_order_value: stats.avg_order_value,
+          active_customers: stats.active_customers,
+        },
+        topCustomers,
+      };
+    } catch (error) {
+      console.error("Error fetching sales data:", error);
+    }
+  }
+
   return (
     <div className="p-4 lg:p-7 bg-gray-50 min-h-screen overflow-y-auto">
       <div className="mb-8">
@@ -49,6 +78,19 @@ export default async function Page() {
           </div>
           <p className="text-sm text-gray-600 mb-4">
             View detailed inventory analysis with charts showing stock levels, quantities by size, and highlighted high-quantity items.
+          </p>
+        </div>
+      )}
+
+      {/* Sales Report Section for Sales Manager */}
+      {canViewSalesReport && salesData && (
+        <div className="mb-8 bg-white p-6 rounded-lg shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <h2 className="text-xl font-bold text-gray-900">Sales Manager Report</h2>
+            <SalesPDFDownloadButton data={salesData} />
+          </div>
+          <p className="text-sm text-gray-600 mb-4">
+            Download sales analytics including customer orders, revenue analysis, and performance metrics.
           </p>
         </div>
       )}
