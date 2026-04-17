@@ -6,13 +6,19 @@ import BestSellers from "@/app/ui/dashboard/best-sellers";
 import { auth } from "@/auth";
 import { fetchAllInventoryItems, fetchInventoryStats } from "@/app/lib/item/inventory-report-data";
 import { fetchActiveOrders, fetchCustomerOrderStats, fetchSalesStats, fetchTopCustomersByOrders } from "@/app/lib/order/sales-report-data";
+import { fetchAdminDashboardStats } from "@/app/lib/admin/admin-report-data";
 import { PDFDownloadButton } from "@/app/ui/inventory/pdf-download";
 import { SalesPDFDownloadButton } from "@/app/ui/sales/pdf-download";
+import { AdminPDFDownloadButton } from "@/app/ui/admin/pdf-download";
 import { hasAccess } from "@/app/lib/config/permission";
 
 export default async function Page() {
   const session = await auth();
   const userRole = session?.user?.role || "";
+  
+  // Check if user is admin
+  const isAdmin = userRole.toLowerCase() === "admin";
+  
   // Show inventory report for inventory managers and admins
   const canViewInventoryReport = userRole.toLowerCase() === "inventory" || userRole.toLowerCase() === "admin" || userRole.toLowerCase() === "manager";
   // Show sales report for sales managers and admins
@@ -21,6 +27,25 @@ export default async function Page() {
   let inventoryItems: any[] = [];
   let inventoryStats: any = null;
   let salesData: any = null;
+  let adminData: any = null;
+
+  if (isAdmin) {
+    try {
+      const dashboardStats = await fetchAdminDashboardStats();
+      adminData = {
+        stats: {
+          total_revenue: dashboardStats.total_revenue,
+          total_orders: dashboardStats.total_orders,
+          total_customers: dashboardStats.total_customers,
+        },
+        userCounts: dashboardStats.user_counts,
+        revenueByDate: dashboardStats.revenue_by_date,
+        transactions: dashboardStats.transactions,
+      };
+    } catch (error) {
+      console.error("Error fetching admin data:", error);
+    }
+  }
 
   if (canViewInventoryReport) {
     try {
@@ -68,6 +93,19 @@ export default async function Page() {
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
       </div>
+
+      {/* Admin Report Section for Admin Users */}
+      {isAdmin && adminData && (
+        <div className="mb-8 bg-white p-6 rounded-lg shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <h2 className="text-xl font-bold text-gray-900">Admin Dashboard Report</h2>
+            <AdminPDFDownloadButton data={adminData} />
+          </div>
+          <p className="text-sm text-gray-600 mb-4">
+            Download comprehensive admin report including system users breakdown, transaction analytics, revenue trends, and overall system health metrics.
+          </p>
+        </div>
+      )}
 
       {/* Inventory Report Section for Inventory Manager */}
       {canViewInventoryReport && inventoryStats && (

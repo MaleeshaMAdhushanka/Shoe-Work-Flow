@@ -1,35 +1,50 @@
 "use client";
 
-import { Item } from "@/app/lib/types";
 import { useState } from "react";
 import { Download, Loader } from "lucide-react";
-import { generateInventoryPDF } from "@/app/lib/item/generate-pdf";
 
-interface PDFDownloadButtonProps {
-  items: Item[];
+interface AdminReportData {
   stats: {
-    total_items: number;
-    total_qty: number;
-    avg_qty: number;
+    total_revenue: number;
+    total_orders: number;
+    total_customers: number;
   };
+  userCounts: {
+    total_users: number;
+    active_users: number;
+    admin_count: number;
+    manager_count: number;
+    sales_count: number;
+    inventory_count: number;
+  };
+  revenueByDate: Array<{
+    date: string;
+    amount: number;
+  }>;
+  transactions: Array<{
+    order_id: string;
+    customer_name: string;
+    total_amount: number;
+    order_date: string;
+  }>;
 }
 
-export function PDFDownloadButton({ items, stats }: PDFDownloadButtonProps) {
+interface AdminPDFDownloadButtonProps {
+  data: AdminReportData;
+}
+
+export function AdminPDFDownloadButton({ data }: AdminPDFDownloadButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const generatePDF = async () => {
     setIsLoading(true);
     try {
-      // Fetch HTML from server
-      const response = await fetch("/api/inventory/download-pdf", {
+      const response = await fetch("/api/admin/download-pdf", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          items,
-          stats,
-        }),
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
@@ -40,16 +55,14 @@ export function PDFDownloadButton({ items, stats }: PDFDownloadButtonProps) {
 
       const htmlContent = await response.text();
 
-      // Use html2pdf to convert HTML to PDF
       const element = document.createElement("div");
       element.innerHTML = htmlContent;
-      
-      // Dynamic import of html2pdf
+
       const html2pdf = (await import("html2pdf.js")).default;
-      
+
       const options = {
         margin: 10,
-        filename: `inventory-report-${new Date().toLocaleDateString()}.pdf`,
+        filename: `admin-report-${new Date().toLocaleDateString()}.pdf`,
         image: { type: "jpeg" as const, quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { orientation: "portrait" as const, unit: "mm" as const, format: "a4" as const },
@@ -79,7 +92,7 @@ export function PDFDownloadButton({ items, stats }: PDFDownloadButtonProps) {
       ) : (
         <>
           <Download className="w-4 h-4" />
-          Download  Report
+          Download Report
         </>
       )}
     </button>
