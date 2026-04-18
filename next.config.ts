@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
         hostname: 'piv8bchfkyj5ozqd.public.blob.vercel-storage.com',
         port: '',
         search: '',
-        pathname: '/assets/**',
+        pathname: '/**',
       },
     ],
   },

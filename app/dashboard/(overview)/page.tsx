@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import CardWrapper from "@/app/ui/dashboard/card-wrapper";
 import { BestSellersSkeleton, CardsSkeleton, RevenueChartSkeleton } from "@/app/ui/dashboard/skeletons";
-import RevenueChart from "@/app/ui/dashboard/revenue-chart";
+import BrandTrendChart from "@/app/ui/dashboard/brand-trend-chart";
 import BestSellers from "@/app/ui/dashboard/best-sellers";
 import { auth } from "@/auth";
 import { fetchAllInventoryItems, fetchInventoryStats } from "@/app/lib/item/inventory-report-data";
@@ -142,7 +142,7 @@ export default async function Page() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
         <div className="lg:col-span-3 bg-white rounded-lg shadow-sm">
           <Suspense fallback={<RevenueChartSkeleton />}>
-            <RevenueChart />
+            <BrandTrendChart />
           </Suspense>
         </div>
         <div className="lg:col-span-2 bg-white rounded-lg shadow-sm">
