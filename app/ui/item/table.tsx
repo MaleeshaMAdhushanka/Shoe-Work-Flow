@@ -40,7 +40,7 @@ export default function ItemTable({ items }: { items: Item[] }) {
   }
   return (
     <>
-      <div className="bg-white mb-8 rounded-lg shadow-sm overflow-hidden border border-gray-300">
+      <div className="bg-white mb-8 rounded-lg shadow-sm overflow-hidden border border-gray-300" suppressHydrationWarning>
         <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-295px)]">
           <table className="min-w-full divide-y divide-gray-200 relative">
             <thead className="bg-gray-50 sticky top-0 z-10">
@@ -67,8 +67,7 @@ export default function ItemTable({ items }: { items: Item[] }) {
                 <tr key={item.id} className="hover:bg-gray-50">
                   <td className="px-6 py-2 whitespace-nowrap">{item.name}</td>
                   <td className="px-6 py-2 whitespace-nowrap">
-                    <Image src={item.image ? `${process.env.NEXT_PUBLIC_BLOB_URL}${item.image}` : "/default.jpg"} alt={item.name} width={64} height={64} className="size-16 object-cover rounded" />
-                  </td>
+                  <Image src={item.image ? `${process.env.NEXT_PUBLIC_BLOB_URL}${item.image.trimEnd()}` : "/default.jpg"} alt={item.name} width={64} height={64} className="size-16 object-cover rounded" />                  </td>
                   <td className="px-6 py-2 whitespace-nowrap">Rs.{item.price}</td>
                   <td className="px-6 py-2 whitespace-nowrap">{item.size}</td>
                   <td className="px-6 py-2 whitespace-nowrap">{item.qty}</td>
@@ -82,13 +81,13 @@ export default function ItemTable({ items }: { items: Item[] }) {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                    <button onClick={() => handleAction("view", item)} className="text-blue-600 hover:text-blue-900 mx-2">
+                    <button suppressHydrationWarning onClick={() => handleAction("view", item)} className="text-blue-600 hover:text-blue-900 mx-2">
                       <Eye className="h-5 w-5" />
                     </button>
-                    <button onClick={() => handleAction("edit", item)} className="text-amber-600 hover:text-amber-900 mx-2">
+                    <button suppressHydrationWarning onClick={() => handleAction("edit", item)} className="text-amber-600 hover:text-amber-900 mx-2">
                       <Pencil className="h-5 w-5" />
                     </button>
-                    <button onClick={() => handleRemove(item.id, item.image)} className="text-red-600 hover:text-red-900 mx-2">
+                    <button suppressHydrationWarning onClick={() => handleRemove(item.id, item.image)} className="text-red-600 hover:text-red-900 mx-2">
                       <Trash2 className="h-5 w-5" />
                     </button>
                   </td>
