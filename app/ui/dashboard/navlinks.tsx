@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, ShoppingBag, UserCircle, Settings, Package, Layers, AlertTriangle } from "lucide-react";
+import { LayoutDashboard, Users, ShoppingBag, UserCircle, Settings, Package, Layers, AlertTriangle, TrendingUp } from "lucide-react";
 import { hasAccess } from "@/app/lib/config/permission";
 
 type NavLinksProps = {
@@ -13,6 +13,7 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
   { icon: Users, label: "Customers", path: "/dashboard/customer" },
   { icon: ShoppingBag, label: "Items", path: "/dashboard/item" },
+  { icon: TrendingUp, label: "Forecasting", path: "/dashboard/novelty" },
   { icon: AlertTriangle, label: "Stock Alerts", path: "/dashboard/stock-alerts" },
   { icon: UserCircle, label: "Users", path: "/dashboard/user" },
   { icon: Package, label: "Orders", path: "/dashboard/order" },

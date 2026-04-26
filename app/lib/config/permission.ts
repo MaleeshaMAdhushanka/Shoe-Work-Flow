@@ -7,6 +7,7 @@ export const ROUTES_ACCESS: Route[] = [
   { path: '/dashboard', allowedRoles: ['admin', 'manager', 'sales', 'inventory','other'] }, 
   { path: '/dashboard/customer', allowedRoles: ['sales', 'admin', 'manager'] },
   { path: '/dashboard/item', allowedRoles: ['admin', 'manager', 'inventory'] },
+  { path: '/dashboard/novelty', allowedRoles: ['admin', 'manager', 'inventory'] },
   { path: '/dashboard/stock-alerts', allowedRoles: ['admin', 'manager', 'inventory'] },
   { path: '/dashboard/order', allowedRoles: ['sales', 'admin', 'manager'] },
   { path: '/dashboard/settings', allowedRoles: ['admin', 'manager', 'sales', 'inventory','other'] }, 

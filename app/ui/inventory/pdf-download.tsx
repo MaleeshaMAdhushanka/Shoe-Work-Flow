@@ -3,7 +3,6 @@
 import { Item } from "@/app/lib/types";
 import { useState } from "react";
 import { Download, Loader } from "lucide-react";
-import { generateInventoryPDF } from "@/app/lib/item/generate-pdf";
 
 interface PDFDownloadButtonProps {
   items: Item[];
@@ -33,9 +32,7 @@ export function PDFDownloadButton({ items, stats }: PDFDownloadButtonProps) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const errorMessage = errorData.error || `HTTP ${response.status}: Failed to generate PDF`;
-        throw new Error(errorMessage);
+        throw new Error(`HTTP ${response.status}: Failed to generate PDF`);
       }
 
       const htmlContent = await response.text();
