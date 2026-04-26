@@ -20,7 +20,7 @@ export default function ItemCartCard({ cartItem, updateQuantity, removeFromCart 
         alt={item.name} 
         width={64}
         height={64}
-        className="object-cover rounded-lg"
+        className="object-cover rounded-lg opacity-60"
       />
       <div className="flex-1">
         <h4 className="font-medium">{item.name}</h4>

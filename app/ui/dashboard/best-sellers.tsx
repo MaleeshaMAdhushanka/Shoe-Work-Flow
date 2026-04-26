@@ -11,7 +11,7 @@ export default async function BestSellers() {
         {bestSellers?.map((item) => (
           <div key={item.id} className="flex items-center gap-4">
             <div className="w-16 h-16 relative rounded-md overflow-hidden">
-              <Image src={item.image ? `${process.env.NEXT_PUBLIC_BLOB_URL}${item.image}` : "/default.jpg"} alt={item.name} fill className="object-cover" sizes="(max-width: 768px) 40vw, 20vw" />
+              <Image src={item.image ? `${process.env.NEXT_PUBLIC_BLOB_URL}${item.image}` : "/default.jpg"} alt={item.name} fill className="object-cover opacity-60" sizes="(max-width: 768px) 40vw, 20vw" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-medium text-gray-900 truncate">{item.name}</p>

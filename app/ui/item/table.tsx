@@ -67,7 +67,7 @@ export default function ItemTable({ items }: { items: Item[] }) {
                 <tr key={item.id} className="hover:bg-gray-50">
                   <td className="px-6 py-2 whitespace-nowrap">{item.name}</td>
                   <td className="px-6 py-2 whitespace-nowrap">
-                  <Image src={item.image ? `${process.env.NEXT_PUBLIC_BLOB_URL}${item.image.trimEnd()}` : "/default.jpg"} alt={item.name} width={64} height={64} className="size-16 object-cover rounded" />                  </td>
+                  <Image src={item.image ? `${process.env.NEXT_PUBLIC_BLOB_URL}${item.image.trimEnd()}` : "/default.jpg"} alt={item.name} width={64} height={64} className="size-16 object-cover rounded opacity-60" />                  </td>
                   <td className="px-6 py-2 whitespace-nowrap">Rs.{item.price}</td>
                   <td className="px-6 py-2 whitespace-nowrap">{item.size}</td>
                   <td className="px-6 py-2 whitespace-nowrap">{item.qty}</td>

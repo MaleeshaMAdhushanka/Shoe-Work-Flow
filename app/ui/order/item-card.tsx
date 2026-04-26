@@ -12,7 +12,7 @@ function ItemCard({ item, addToCart,canAddToCart }: ItemCardProps) {
   return (
     <div key={item.id} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
       <div className="relative h-40 sm:h-48 bg-gray-100">
-        <Image src={item.image ? `${process.env.NEXT_PUBLIC_BLOB_URL}${item.image}` : "/default.jpg"} alt={item.name} fill className="w-full h-full object-cover" />
+        <Image src={item.image ? `${process.env.NEXT_PUBLIC_BLOB_URL}${item.image}` : "/default.jpg"} alt={item.name} fill className="w-full h-full object-cover opacity-60" />
         <button
           onClick={() => {
             addToCart(item);
